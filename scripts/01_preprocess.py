@@ -86,7 +86,7 @@ CORPUS = [
         "theme": "Intelligence artificielle",
         "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=OJ:L_202401689",
         "type": "pdf",
-        "sections": ["TITRE I", "TITRE II", "TITRE III", "TITRE IV", "ANNEXE III"],
+        "sections": ["CHAPITRE I", "CHAPITRE II", "CHAPITRE III", "CHAPITRE IV", "CHAPITRE V"],
         "max_pages": None,
     },
     {
@@ -168,7 +168,7 @@ CORPUS = [
         "theme": "Intelligence artificielle",
         "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L_202401689",
         "type": "pdf",
-        "sections": ["TITLE I", "TITLE II", "TITLE III", "TITLE IV", "ANNEX III"],
+        "sections": ["CHAPTER I", "CHAPTER II", "CHAPTER III", "CHAPTER IV", "CHAPTER V"],
         "max_pages": None,
     },
     {
@@ -292,8 +292,9 @@ def extract_text_from_pdf(filepath: str, sections: list = None) -> list[tuple[in
     """Extrait le texte d'un PDF page par page.
 
     Retourne une liste de tuples (page_number, text) — page_number est 1-indexé.
-    Si sections est fourni, filtre les sections pertinentes tout en conservant
-    l'information de page.
+    Si sections est fourni, filtre les sections pertinentes page par page :
+    une page est incluse si elle contient un marqueur de section cible, ou si
+    elle se trouve entre un marqueur cible et le prochain marqueur non-cible.
     """
     doc = fitz.open(filepath)
     pages = []
@@ -306,18 +307,30 @@ def extract_text_from_pdf(filepath: str, sections: list = None) -> list[tuple[in
     if not sections:
         return pages
 
-    # Reconstruction du texte complet pour la détection de sections,
-    # puis réattribution des pages
-    full_text = "\n\n".join(t for _, t in pages)
-    filtered_text = extract_sections_from_text(full_text, sections)
+    section_re = re.compile(
+        r"^(TITRE|CHAPITRE|ANNEXE|SECTION|TITLE|CHAPTER|ANNEX)\s+[IVXLC\d]+\s*$",
+        re.IGNORECASE | re.MULTILINE,
+    )
+    targets = [kw.upper() for kw in sections]
 
-    # On ré-attribue les pages : chaque page est incluse si son texte
-    # apparaît dans le texte filtré
     filtered_pages = []
+    in_section = False
+
     for page_num, text in pages:
-        # Vérification par chevauchement partiel (50 premiers caractères)
-        sample = text[:80].strip()
-        if sample and sample in filtered_text:
+        text_upper = text.upper()
+
+        # État hérité de la page précédente — la page est candidate à l'inclusion
+        include = in_section
+
+        # Parcourt les marqueurs de section dans l'ordre d'apparition sur la page
+        for match in section_re.finditer(text_upper):
+            full_line = text_upper[match.start():match.end() + 30]
+            is_target = any(t in full_line for t in targets)
+            if is_target:
+                include = True   # La page contient du contenu cible
+            in_section = is_target  # Le dernier marqueur détermine l'état pour la page suivante
+
+        if include:
             filtered_pages.append((page_num, text))
 
     return filtered_pages if filtered_pages else pages
