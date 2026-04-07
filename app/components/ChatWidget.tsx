@@ -216,7 +216,7 @@ export default function ChatWidget() {
     const welcomeTexts = [CHAT_T.fr.welcome, CHAT_T.en.welcome];
     setMessages((prev) => {
       const last = [...prev].reverse().find((m) => m.role === "assistant");
-      if (last && welcomeTexts.includes(last.content)) return prev; // déjà un accueil
+      if (last && (welcomeTexts as string[]).includes(last.content)) return prev; // déjà un accueil
       return [...prev, makeWelcome(lang)];
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
