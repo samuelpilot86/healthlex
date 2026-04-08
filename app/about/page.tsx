@@ -6,67 +6,67 @@ import { LangToggle } from "../components/LangToggle";
 
 const STACK_FR = [
   {
-    tool: "Groq · Llama 3.3 70B",
-    type: "LLM",
+    tool: "Llama 3.3 70B, Groq",
+    type: "LLM et inférence",
     advantage:
-      "Inférence ultra-rapide avec streaming natif — la latence perçue reste inférieure à la seconde, ce qui est déterminant pour l'UX d'un chatbot.",
+      "Llama est un modèle de langage open source. L'inférence est réalisée par Groq, entreprise qui a conçu des puces spécialisées pour l'inférence de LLM, ce qui permet une génération de réponse rapide.",
   },
   {
     tool: "Cohere embed-multilingual-v3.0",
     type: "Modèle d'embedding",
     advantage:
-      "Modèle nativement multilingue (français / anglais juridique). Les 1 024 dimensions offrent un excellent compromis entre précision sémantique et coût de stockage.",
+      "Un modèle d'embedding apprend les textes réglementaires, ou plus préciément les transforme en représentations sémantiques (vecteurs). Le modèle choisi prend en charge l'anglais mais aussi le français. Les 1 024 dimensions des vecteurs sémantiques offrent un excellent compromis entre précision sémantique et coût de stockage.",
   },
   {
     tool: "Qdrant Cloud",
     type: "Base vectorielle",
     advantage:
-      "Base vectorielle managée sur AWS eu-west, SDK TypeScript mature, filtres de métadonnées natifs — idéal pour restreindre la recherche par thème réglementaire.",
+      "La base vectorielle stocke les représentations sémantiques des textes réglementaires, permet leur rapprochement avec la question posée et restitue les extraits réglementaires pertinents. Hébergée sur un serveur Amazon Web Services en Irlande. Permet un filtrage par langue et par texte réglementaire",
   },
   {
     tool: "Next.js (full-stack)",
     type: "Framework web",
     advantage:
-      "Un seul dépôt, un seul déploiement. Les API Routes gardent les clés côté serveur sans backend séparé ; le streaming SSE s'intègre nativement.",
+      "Framework comprenant le front-end (interface) et le back-end (traitements), facilitant la gestion du code, le déploiement et certaines fonctionnalités (affichage de la réponse au fil de sa génération).",
   },
   {
     tool: "Vercel",
     type: "Hébergement",
     advantage:
-      "Déploiement continu en quelques secondes depuis GitHub, edge network mondial, HTTPS et variables d'environnement gérés de façon native.",
+      "Permet un accès par le Web via une simple URL. Les modifications sont rapidement intégrées, accélérant le développement et les tests.",
   },
 ];
 
 const STACK_EN = [
   {
-    tool: "Groq · Llama 3.3 70B",
-    type: "LLM",
+    tool: "Llama 3.3 70B, Groq",
+    type: "LLM and inference",
     advantage:
-      "Ultra-fast inference with native streaming — perceived latency stays under one second, which is critical for chatbot UX.",
+      "Llama is an open-source language model. Inference is handled by Groq, a company that designed specialised chips for LLM inference, enabling fast response generation.",
   },
   {
     tool: "Cohere embed-multilingual-v3.0",
-    type: "Embedding Model",
+    type: "Embedding model",
     advantage:
-      "Natively multilingual model (French / legal English). The 1,024 dimensions offer an excellent balance between semantic precision and storage cost.",
+      "An embedding model learns regulatory texts — or more precisely, transforms them into semantic representations (vectors). The chosen model supports both English and French. The 1,024 dimensions of the semantic vectors offer an excellent balance between semantic precision and storage cost.",
   },
   {
     tool: "Qdrant Cloud",
-    type: "Vector Database",
+    type: "Vector database",
     advantage:
-      "Managed vector database on AWS eu-west, mature TypeScript SDK, native metadata filters — ideal for restricting search by regulatory topic.",
+      "The vector database stores the semantic representations of regulatory texts, matches them against the question asked, and returns the relevant regulatory excerpts. Hosted on an Amazon Web Services server in Ireland. Supports filtering by language and by regulatory text.",
   },
   {
     tool: "Next.js (full-stack)",
-    type: "Web Framework",
+    type: "Web framework",
     advantage:
-      "One repository, one deployment. API Routes keep keys server-side without a separate backend; SSE streaming integrates natively.",
+      "A framework covering both the front-end (interface) and back-end (processing), simplifying code management, deployment, and certain features (streaming the response as it is generated).",
   },
   {
     tool: "Vercel",
     type: "Hosting",
     advantage:
-      "Continuous deployment in seconds from GitHub, global edge network, HTTPS and environment variables managed natively.",
+      "Provides web access via a simple URL. Updates are deployed quickly, speeding up development and testing.",
   },
 ];
 

@@ -26,8 +26,33 @@ interface Message {
 
 // ─── Traductions ───────────────────────────────────────────────────────────────
 
+const DOCS_FR = [
+  { id: "all",            label: "Tous les textes" },
+  { id: "rgpd",           label: "RGPD" },
+  { id: "mdr",            label: "MDR" },
+  { id: "ai_act",         label: "AI Act" },
+  { id: "nis2",           label: "NIS2" },
+  { id: "hds",            label: "HDS" },
+  { id: "cnil_entrepots", label: "CNIL — Entrepôts" },
+  { id: "cnil_checklist", label: "CNIL — Checklist" },
+  { id: "ans_dmn",        label: "ANS — DMN" },
+];
+
+const DOCS_EN = [
+  { id: "all",            label: "All texts" },
+  { id: "gdpr",           label: "GDPR" },
+  { id: "mdr_en",         label: "MDR" },
+  { id: "ai_act_en",      label: "AI Act" },
+  { id: "nis2_en",        label: "NIS2" },
+  { id: "hds",            label: "HDS (FR)" },
+  { id: "cnil_entrepots", label: "CNIL — Entrepôts (FR)" },
+  { id: "cnil_checklist", label: "CNIL — Checklist (FR)" },
+  { id: "ans_dmn",        label: "ANS — DMN (FR)" },
+];
+
 const CHAT_T = {
   fr: {
+    filterLabel: "Restreindre à :",
     welcome:
       "Bonjour ! Je suis HealthLex, un moteur de recherche dans la réglementation HealthTech (RGPD, MDR, AI Act, NIS2, HDS…). Posez-moi une question sur un texte réglementaire et je vous citerai les extraits pertinents.",
     placeholder: "Posez votre question réglementaire…",
@@ -42,6 +67,7 @@ const CHAT_T = {
     readDoc: "Read in document",
   },
   en: {
+    filterLabel: "Restrict to:",
     welcome:
       "Hello! I'm HealthLex, a search engine for HealthTech regulation (GDPR, MDR, AI Act, NIS2, HDS…). Ask me a question about a regulatory text and I'll cite the relevant excerpts.",
     placeholder: "Ask your regulatory question…",
@@ -207,6 +233,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([makeWelcome(lang)]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [theme, setTheme] = useState("all");
   const shouldScrollRef = useRef(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -214,6 +241,7 @@ export default function ChatWidget() {
   // Au changement de langue :
   // - si le dernier message assistant est un accueil → le remplacer dans la nouvelle langue
   // - si une conversation est en cours → ne pas interrompre
+  // - remettre le filtre thématique à "all" (les doc_ids diffèrent entre FR et EN)
   useEffect(() => {
     const welcomeTexts = [CHAT_T.fr.welcome, CHAT_T.en.welcome];
     setMessages((prev) => {
@@ -223,6 +251,7 @@ export default function ChatWidget() {
       }
       return prev;
     });
+    setTheme("all");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
@@ -252,7 +281,7 @@ export default function ChatWidget() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, lang }),
+        body: JSON.stringify({ question, lang, theme }),
       });
 
       if (!res.ok) {
@@ -366,6 +395,21 @@ export default function ChatWidget() {
           </div>
         </div>
       )}
+
+      {/* Filtre thématique */}
+      <div className="px-4 py-2 border-t border-slate-100 bg-white flex items-center gap-2">
+        <span className="text-xs text-slate-400 shrink-0">{t.filterLabel}</span>
+        <select
+          value={theme}
+          onChange={(e) => setTheme(e.target.value)}
+          disabled={loading}
+          className="flex-1 text-xs border border-slate-200 rounded-lg px-2 py-1.5 text-slate-600 bg-white focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent disabled:opacity-50 cursor-pointer"
+        >
+          {(lang === "fr" ? DOCS_FR : DOCS_EN).map((doc) => (
+            <option key={doc.id} value={doc.id}>{doc.label}</option>
+          ))}
+        </select>
+      </div>
 
       {/* Input */}
       <form
