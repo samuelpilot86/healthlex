@@ -43,20 +43,38 @@ const CORPUS_ITEMS = [
     urlEn: "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32022L2555",
   },
   {
+    icon: "🏨",
+    labelFr: "HDS",
+    labelEn: "HDS",
+    descFr: "Hébergement de données de santé — référentiel de certification",
+    descEn: "Health Data Hosting — certification framework (FR)",
+    urlFr: "https://esante.gouv.fr/sites/default/files/media_entity/documents/ANS_referentiel-HDS_V1-1.pdf",
+    urlEn: null, // French authority — no official English version
+  },
+  {
     icon: "🔍",
-    labelFr: "CNIL",
-    labelEn: "CNIL",
+    labelFr: "CNIL — Entrepôts",
+    labelEn: "CNIL — Entrepôts",
     descFr: "Référentiel entrepôts de données de santé",
-    descEn: "Health Data Warehouse Reference Framework",
+    descEn: "Health Data Warehouse Reference Framework (FR)",
     urlFr: "https://www.cnil.fr/sites/cnil/files/atoms/files/referentiel_entrepot.pdf",
     urlEn: null, // French authority — no official English version
   },
   {
+    icon: "✅",
+    labelFr: "CNIL — Checklist",
+    labelEn: "CNIL — Checklist",
+    descFr: "Checklist mise en conformité données de santé",
+    descEn: "Health Data Compliance Checklist (FR)",
+    urlFr: "https://www.cnil.fr/sites/cnil/files/atoms/files/cnil_guide_securite_personnelle_sante.pdf",
+    urlEn: null, // French authority — no official English version
+  },
+  {
     icon: "🌿",
-    labelFr: "ANS",
-    labelEn: "ANS",
+    labelFr: "ANS — DMN",
+    labelEn: "ANS — DMN",
     descFr: "Arbre de décision qualification DMN",
-    descEn: "Decision Tree for DMN Qualification",
+    descEn: "Decision Tree for DMN Qualification (FR)",
     urlFr: "https://industriels.esante.gouv.fr/sites/default/files/media/document/ANS_DMN_Arbre-de-decision-DMn-V6_20231127.pdf",
     urlEn: null, // French authority — no official English version
   },
