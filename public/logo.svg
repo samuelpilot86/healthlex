@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Loupe — cercle extérieur sombre -->
+  <circle cx="44" cy="44" r="30" fill="#1a2e2e" />
+  <!-- Loupe — fond intérieur clair -->
+  <circle cx="44" cy="44" r="24" fill="#e8f5f0" />
+  <!-- Reflet doux -->
+  <circle cx="36" cy="36" r="10" fill="white" fill-opacity="0.18" />
+  <!-- Croix médicale -->
+  <rect x="36" y="28" width="16" height="32" rx="3" fill="#10b981" />
+  <rect x="28" y="36" width="32" height="16" rx="3" fill="#10b981" />
+  <!-- Manche de la loupe -->
+  <rect x="65" y="63" width="22" height="10" rx="5" fill="#1a2e2e" transform="rotate(45 65 63)" />
+  <!-- Étoile haut-gauche grande -->
+  <path d="M18 18 L20 13 L22 18 L27 20 L22 22 L20 27 L18 22 L13 20 Z" fill="#34d399" />
+  <!-- Étoile haut-gauche petite -->
+  <path d="M10 10 L11 7 L12 10 L15 11 L12 12 L11 15 L10 12 L7 11 Z" fill="#6ee7b7" />
+  <!-- Étoile bas-droite -->
+  <path d="M74 68 L75.5 64 L77 68 L81 69.5 L77 71 L75.5 75 L74 71 L70 69.5 Z" fill="#34d399" />
+</svg>

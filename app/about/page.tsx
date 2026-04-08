@@ -21,7 +21,7 @@ const STACK_FR = [
     tool: "Qdrant Cloud",
     type: "Base vectorielle",
     advantage:
-      "La base vectorielle stocke les représentations sémantiques des textes réglementaires, permet leur rapprochement avec la question posée et restitue les extraits réglementaires pertinents. Hébergée sur un serveur Amazon Web Services en Irlande. Permet un filtrage par langue et par texte réglementaire",
+      "La base vectorielle stocke les représentations sémantiques des textes réglementaires, permet leur rapprochement avec la question posée et restitue les extraits réglementaires pertinents. Hébergée sur un serveur Amazon Web Services en Irlande. Permet un filtrage par langue et par texte réglementaire.",
   },
   {
     tool: "Next.js (full-stack)",
@@ -131,6 +131,8 @@ export default function AboutPage() {
       <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="HealthLex logo" className="h-8 w-8" />
             <span className="inline-flex text-xl font-black tracking-tight">
               <span className="text-teal-600">Health</span><span className="text-slate-800">Lex</span>
             </span>

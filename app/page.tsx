@@ -117,6 +117,8 @@ export default function Home() {
       <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="HealthLex logo" className="h-8 w-8" />
             <span className="inline-flex text-xl font-black tracking-tight">
               <span className="text-teal-600">Health</span><span className="text-slate-800">Lex</span>
             </span>
