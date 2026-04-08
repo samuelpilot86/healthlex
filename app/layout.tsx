@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "HealthLex — HealthTech Regulatory Assistant",
   description:
     "Posez vos questions juridiques sur le RGPD, MDR, AI Act, NIS2, HDS… HealthLex vous répond en citant ses sources réglementaires.",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
