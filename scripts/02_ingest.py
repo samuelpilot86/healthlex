@@ -33,7 +33,7 @@ COLLECTION     = os.getenv("QDRANT_COLLECTION", "lexsante")
 
 EMBEDDING_MODEL = "embed-multilingual-v3.0"
 EMBEDDING_DIM   = 1024   # Dimension des vecteurs embed-multilingual-v3.0
-BATCH_SIZE      = 48     # Nombre de chunks envoyés à Cohere par batch
+BATCH_SIZE      = 24     # Nombre de chunks envoyés à Cohere par batch
 
 BASE_DIR    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CORPUS_FILE = os.path.join(BASE_DIR, "corpus", "chunks", "corpus.jsonl")
@@ -73,7 +73,7 @@ def ingest(cohere_client: cohere.Client, qdrant: QdrantClient, chunks: list):
 
     for i in tqdm(range(0, total, BATCH_SIZE), desc="Ingestion"):
         batch = chunks[i : i + BATCH_SIZE]
-        texts = [c["text"] for c in batch]
+        texts = [c.get("embed_text", c["text"]) for c in batch]
 
         # Génération des embeddings via Cohere avec retry sur 429
         for attempt in range(5):
@@ -112,7 +112,15 @@ def ingest(cohere_client: cohere.Client, qdrant: QdrantClient, chunks: list):
                 },
             ))
 
-        qdrant.upsert(collection_name=COLLECTION, points=points)
+        for attempt in range(4):
+            try:
+                qdrant.upsert(collection_name=COLLECTION, points=points)
+                break
+            except Exception as e:
+                if attempt < 3:
+                    time.sleep(10 * (attempt + 1))
+                else:
+                    raise
         indexed += len(batch)
 
         # Délai pour respecter le rate limit Cohere free tier (100k tokens/min)

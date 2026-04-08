@@ -236,7 +236,13 @@ def download_file(url: str, dest_path: str) -> bool:
 
 def clean_text(text: str) -> str:
     """Nettoie le texte extrait : supprime les espaces multiples,
-    les numéros de page, les en-têtes répétitifs."""
+    les numéros de page, les en-têtes répétitifs EUR-Lex."""
+    # Supprime les en-têtes EUR-Lex répétés sur chaque page
+    # ex. : "4.5.2016 L 119/33 Journal officiel de l'Union européenne FR"
+    text = re.sub(
+        r"\d{1,2}\.\d{1,2}\.\d{4}\s+L\s+\d+/\d+\s+Journal officiel de l.Union europ[eé]enne\s+(?:FR|EN)",
+        " ", text, flags=re.IGNORECASE
+    )
     # Supprime les lignes qui ne sont que des numéros de page
     text = re.sub(r"\n\s*\d+\s*\n", "\n", text)
     # Normalise les espaces multiples
@@ -364,74 +370,110 @@ def extract_text_from_html(url: str) -> str:
 
 def chunk_text(pages: list[tuple[int, str]], doc_id: str, doc_label: str,
                doc_theme: str, doc_url: str, lang_code: str = "fr") -> list:
-    """Découpe le texte en chunks aux frontières de phrases, avec numéro de page.
+    """Découpe le texte en chunks aux frontières d'articles puis de phrases.
 
-    Chaque chunk commence et se termine sur une phrase complète.
-    L'overlap est réalisé en reprenant les dernières phrases du chunk précédent.
-    Le numéro de page correspond à la page où commence le chunk.
+    Stratégie :
+    1. Segmentation par article sur le texte brut (lookahead regex) — robuste
+       même si le titre d'article est collé au texte précédent sans ponctuation.
+    2. Chaque segment est ensuite découpé en chunks de taille MAX_CHARS.
+    3. Chaque chunk reçoit un `embed_text` = préfixe contextuel + texte brut,
+       utilisé pour l'embedding ; `text` reste le texte brut pour l'affichage.
     """
-    MAX_CHARS = CHUNK_SIZE * 4    # ~3 200 caractères ≈ 800 tokens
-    OVERLAP_CHARS = CHUNK_OVERLAP * 4  # ~600 caractères de recouvrement
+    MAX_CHARS = CHUNK_SIZE * 4
+    OVERLAP_CHARS = CHUNK_OVERLAP * 4
 
-    # ── 1. Tokenisation en phrases par page ──────────────────────────
-    # Chaque élément : (page_num, sentence_text)
-    page_sentences: list[tuple[int, str]] = []
-    for page_num, text in pages:
-        sents = sent_tokenize(text)
+    # Lookahead sur les titres d'articles — split sans consommer le titre
+    ARTICLE_SPLIT_RE = re.compile(
+        r"(?=\bArticle\s+(?:\d+(?:\s+bis|\s+ter)?|premier|1er)\b)",
+        re.IGNORECASE,
+    )
+    ARTICLE_TITLE_RE = re.compile(
+        r"^(Article\s+(?:\d+(?:\s+bis|\s+ter)?|premier|1er))"
+        r"(?:\s+([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s\-'«»]{2,40?}))?",
+        re.IGNORECASE,
+    )
+
+    # ── 1. Segmentation par article ────────────────────────────────
+    # Chaque segment : (page_num, article_title, text)
+    segments: list[tuple[int, str, str]] = []
+    current_article = ""
+    current_page = pages[0][0] if pages else 1
+    pending_text = ""
+
+    for page_num, page_text in pages:
+        parts = ARTICLE_SPLIT_RE.split(page_text)
+        for part in parts:
+            part = part.strip()
+            if not part:
+                continue
+            m = ARTICLE_TITLE_RE.match(part)
+            if m:
+                # Sauvegarde le segment en cours
+                if pending_text.strip():
+                    segments.append((current_page, current_article, pending_text))
+                # Nouveau segment
+                art_num = m.group(1)
+                art_name = (m.group(2) or "").strip()
+                current_article = f"{art_num}{(' — ' + art_name) if art_name else ''}"
+                current_page = page_num
+                pending_text = part
+            else:
+                pending_text += " " + part
+
+    if pending_text.strip():
+        segments.append((current_page, current_article, pending_text))
+
+    # ── 2. Chunking par segment ─────────────────────────────────────
+    raw_chunks: list[tuple[int, str, list[str]]] = []
+
+    for seg_page, article_title, seg_text in segments:
+        sents = sent_tokenize(seg_text)
+        clean_sents: list[tuple[int, str]] = []
         for sent in sents:
-            sent = sent.strip()
-            # Recolle les césures de fin de ligne typiques des PDFs
             sent = re.sub(r"-\n\s*", "", sent)
-            sent = re.sub(r"\s+", " ", sent)
-            if len(sent) > 20:  # ignore les artefacts très courts
-                page_sentences.append((page_num, sent))
+            sent = re.sub(r"\s+", " ", sent).strip()
+            if len(sent) > 20:
+                clean_sents.append((seg_page, sent))
 
-    if not page_sentences:
-        return []
+        current_sents: list[str] = []
+        current_page = seg_page
+        current_len = 0
 
-    # ── 2. Regroupement en chunks ─────────────────────────────────────
-    raw_chunks: list[tuple[int, list[str]]] = []  # (page_start, [sentences])
-    current_sents: list[str] = []
-    current_page: int = page_sentences[0][0]
-    current_len: int = 0
+        for page_num, sent in clean_sents:
+            sent_len = len(sent) + 1
+            if current_len + sent_len > MAX_CHARS and current_sents:
+                raw_chunks.append((current_page, article_title, current_sents.copy()))
+                overlap_sents: list[str] = []
+                overlap_len = 0
+                for s in reversed(current_sents):
+                    if overlap_len + len(s) + 1 <= OVERLAP_CHARS:
+                        overlap_sents.insert(0, s)
+                        overlap_len += len(s) + 1
+                    else:
+                        break
+                current_sents = overlap_sents
+                current_len = overlap_len
+                current_page = page_num
+            if not current_sents:
+                current_page = page_num
+            current_sents.append(sent)
+            current_len += sent_len
 
-    for page_num, sent in page_sentences:
-        sent_len = len(sent) + 1  # +1 pour l'espace de jointure
+        if current_sents:
+            raw_chunks.append((current_page, article_title, current_sents))
 
-        if current_len + sent_len > MAX_CHARS and current_sents:
-            # Sauvegarde le chunk courant
-            raw_chunks.append((current_page, current_sents.copy()))
-
-            # Overlap : reprend les dernières phrases jusqu'à OVERLAP_CHARS
-            overlap_sents: list[str] = []
-            overlap_len = 0
-            for s in reversed(current_sents):
-                if overlap_len + len(s) + 1 <= OVERLAP_CHARS:
-                    overlap_sents.insert(0, s)
-                    overlap_len += len(s) + 1
-                else:
-                    break
-            current_sents = overlap_sents
-            current_len = overlap_len
-            # La page du nouveau chunk = page de la première phrase reprise
-            # (ou page courante si pas d'overlap)
-            current_page = page_num
-
-        if not current_sents:
-            current_page = page_num
-        current_sents.append(sent)
-        current_len += sent_len
-
-    if current_sents:
-        raw_chunks.append((current_page, current_sents))
-
-    # ── 3. Construction des objets chunk ─────────────────────────────
+    # ── 3. Construction des objets chunk ───────────────────────────
     result = []
     chunk_idx = 0
-    for page_start, sents in raw_chunks:
+    for page_start, article_title, sents in raw_chunks:
         text_chunk = " ".join(sents).strip()
         if len(text_chunk) < 100:
             continue
+        embed_text = (
+            f"{doc_label} — {article_title} : {text_chunk}"
+            if article_title else
+            f"{doc_label} : {text_chunk}"
+        )
         result.append({
             "id": f"{doc_id}_{chunk_idx:04d}",
             "doc_id": doc_id,
@@ -439,10 +481,11 @@ def chunk_text(pages: list[tuple[int, str]], doc_id: str, doc_label: str,
             "theme": doc_theme,
             "source_url": doc_url,
             "chunk_index": chunk_idx,
-            "total_chunks": 0,   # mis à jour après
+            "total_chunks": 0,
             "page_start": page_start,
             "lang": lang_code,
             "text": text_chunk,
+            "embed_text": embed_text,
         })
         chunk_idx += 1
 

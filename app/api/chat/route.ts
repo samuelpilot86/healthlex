@@ -17,6 +17,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY! });
 
 const COLLECTION = process.env.QDRANT_COLLECTION ?? "lexsante";
 const TOP_K = 5;
+const RETRIEVAL_K = 15; // Nombre de chunks récupérés avant reranking
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -88,14 +89,14 @@ export async function POST(req: NextRequest) {
   try {
     const results = await qdrant.search(COLLECTION, {
       vector,
-      limit: TOP_K + EXCLUDED_DOC_IDS.length, // on compense les exclusions éventuelles
+      limit: RETRIEVAL_K + EXCLUDED_DOC_IDS.length,
       with_payload: true,
       ...(filter ? { filter } : {}),
     });
 
-    sources = results
+    const candidates = results
       .filter((hit) => !EXCLUDED_DOC_IDS.includes(hit.payload?.doc_id as string))
-      .slice(0, TOP_K)
+      .slice(0, RETRIEVAL_K)
       .map((hit) => ({
         score: hit.score,
         document: (hit.payload?.doc_label as string) ?? "Document inconnu",
@@ -103,12 +104,26 @@ export async function POST(req: NextRequest) {
         source_url: (hit.payload?.source_url as string) ?? "",
         page_start: (hit.payload?.page_start as number) ?? null,
         text: (hit.payload?.text as string) ?? "",
+        embed_text: (hit.payload?.embed_text as string) ?? "",
         chunk_id: String(hit.id),
       }));
+
+    // 2b. Reranking Cohere — utilise embed_text (avec préfixe contextuel) si disponible
+    const rerankResponse = await cohere.rerank({
+      model: "rerank-multilingual-v3.0",
+      query: question,
+      documents: candidates.map((c) => c.embed_text || c.text),
+      topN: TOP_K,
+    });
+
+    sources = rerankResponse.results.map((r) => {
+      const { embed_text: _et, ...rest } = candidates[r.index];
+      return { ...rest, score: r.relevanceScore };
+    });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     const detail = (e as Record<string, unknown>)?.data ?? (e as Record<string, unknown>)?.body ?? msg;
-    console.error("[HealthLex] Qdrant search error:", msg, "| detail:", JSON.stringify(detail));
+    console.error("[HealthLex] Qdrant/rerank error:", msg, "| detail:", JSON.stringify(detail));
     console.error("[HealthLex] vector length:", vector?.length, "| filter:", JSON.stringify(filter));
     return new Response(JSON.stringify({ error: "Erreur recherche Qdrant", detail: msg }), {
       status: 500,
