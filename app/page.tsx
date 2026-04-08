@@ -66,9 +66,9 @@ const T = {
   fr: {
     badge: "Démo",
     heroLine1: "La réglementation HealthTech,",
-    heroLine2: "enfin accessible.",
+    heroLine2: "retrouvée en quelques secondes.",
     heroSub:
-      "HealthLex répond à vos questions juridiques sur la base d'un corpus de réglementations européennes et françaises — sans jamais inventer : chaque affirmation renvoie à sa source réglementaire.",
+      "HealthLex parcourt la réglementation européenne pour vous retourner les extraits exacts — sans jamais inventer, chaque réponse renvoie au texte officiel.",
     corpusTitle: "Corpus réglementaire intégré :",
     ctaMain: "Comprendre le projet →",
     ctaSub: "Problème · Stack technique · Améliorations",
@@ -78,9 +78,9 @@ const T = {
   en: {
     badge: "Demo",
     heroLine1: "HealthTech regulation,",
-    heroLine2: "finally accessible.",
+    heroLine2: "found in seconds.",
     heroSub:
-      "HealthLex answers your legal questions based on a corpus of European and French regulations — without ever hallucinating: every claim links back to its regulatory source.",
+      "HealthLex searches European regulation to return exact excerpts — without ever hallucinating, every answer links back to the official text.",
     corpusTitle: "Integrated Regulatory Corpus:",
     ctaMain: "Understand the project →",
     ctaSub: "Problem · Tech Stack · Improvements",
