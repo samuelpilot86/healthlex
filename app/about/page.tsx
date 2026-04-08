@@ -74,11 +74,11 @@ const T = {
   fr: {
     badge: "Portfolio PM IA",
     backLink: "← Retour au chat",
-    h1: "Répondre aux questions réglementaires HealthTech — et citer ses sources",
+    h1: "Trouver les textes réglementaires HealthTech en quelques secondes",
     subtitle: "Un RAG de démonstration complet, du corpus réglementaire au déploiement Vercel.",
     problemTitle: "Le problème",
     problemText:
-      "Les startups HealthTech font face à un mur réglementaire : RGPD, MDR, AI Act, NIS2, HDS… La lecture des textes officiels est longue, technique et difficilement accessible sans juriste. HealthLex démontre qu'un système RAG bien conçu peut rendre ces informations instantanément accessibles et sourcées.",
+      "Les réglementations HealthTech — RGPD, MDR, AI Act, NIS2, HDS — représentent des milliers de pages de textes techniques. Identifier l'article exact applicable à une situation prend du temps, même pour un professionnel. HealthLex démontre qu'un système RAG peut localiser en quelques secondes les extraits pertinents et les citer avec précision — sans jamais les inventer.",
     stats: [
       { value: "6", label: "textes réglementaires" },
       { value: "403", label: "chunks indexés" },
@@ -91,7 +91,6 @@ const T = {
     improvementsTitle: "Améliorations possibles",
     improvements: [
       "Élargir le corpus aux textes applicables aux États-Unis, aux normes non disponibles en accès libre (ISO…) et à la jurisprudence",
-      "Mémoire conversationnelle — conserver le contexte d'un échange à l'autre",
       "Veille juridique automatisée et actualisation continue du RAG",
     ],
     ctaButton: "Essayer HealthLex →",
@@ -99,11 +98,11 @@ const T = {
   en: {
     badge: "AI PM Portfolio",
     backLink: "← Back to chat",
-    h1: "Answering HealthTech Regulatory Questions — and Citing Sources",
+    h1: "Find HealthTech Regulatory Texts in Seconds",
     subtitle: "A complete RAG demonstration, from regulatory corpus to Vercel deployment.",
     problemTitle: "The Problem",
     problemText:
-      "HealthTech startups face a regulatory wall: GDPR, MDR, AI Act, NIS2, HDS… Official texts are long, technical and difficult to navigate without a solicitor. HealthLex demonstrates that a well-designed RAG system can make this information instantly accessible and properly sourced.",
+      "HealthTech regulations — GDPR, MDR, AI Act, NIS2, HDS — span thousands of pages of technical text. Identifying the exact article applicable to a given situation takes time, even for a professional. HealthLex demonstrates that a RAG system can locate relevant excerpts in seconds and cite them precisely — without ever hallucinating.",
     stats: [
       { value: "6", label: "regulatory texts" },
       { value: "403", label: "indexed chunks" },
@@ -116,7 +115,6 @@ const T = {
     improvementsTitle: "Possible Improvements",
     improvements: [
       "Extend the corpus to texts applicable in the United States, standards not freely available (ISO…) and case law",
-      "Conversational memory — preserving context across exchanges",
       "Automated legal monitoring and continuous RAG updates",
     ],
     ctaButton: "Try HealthLex →",
@@ -133,8 +131,9 @@ export default function AboutPage() {
       <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-teal-600 text-xl font-black tracking-tight">Health</span>
-            <span className="text-slate-800 text-xl font-black tracking-tight">Lex</span>
+            <span className="inline-flex text-xl font-black tracking-tight">
+              <span className="text-teal-600">Health</span><span className="text-slate-800">Lex</span>
+            </span>
           </Link>
           <div className="flex items-center gap-4">
             <Link
