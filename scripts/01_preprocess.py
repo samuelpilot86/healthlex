@@ -423,10 +423,28 @@ def chunk_text(pages: list[tuple[int, str]], doc_id: str, doc_label: str,
     if pending_text.strip():
         segments.append((current_page, current_article, pending_text))
 
+    # Détecte les listes de définitions numérotées : 1) «...», 2) «...»
+    # Présentes notamment dans Article 4 RGPD/GDPR, Article 2 MDR, etc.
+    NUMBERED_DEF_RE = re.compile(r"(?=\b\d+\)\s+«)", re.IGNORECASE)
+
+    def split_definitions(text: str) -> list[str]:
+        """Si le texte est une liste de définitions numérotées, découpe à chaque item."""
+        items = NUMBERED_DEF_RE.split(text)
+        # On ne découpe que si on trouve au moins 3 items numérotés
+        return items if len(items) >= 3 else [text]
+
     # ── 2. Chunking par segment ─────────────────────────────────────
     raw_chunks: list[tuple[int, str, list[str]]] = []
 
     for seg_page, article_title, seg_text in segments:
+        # Sous-segmentation pour les articles de définitions numérotées
+        sub_segments = split_definitions(seg_text)
+        if len(sub_segments) > 1:
+            for sub in sub_segments:
+                sub = sub.strip()
+                if len(sub) > 50:
+                    raw_chunks.append((seg_page, article_title, [sub]))
+            continue
         sents = sent_tokenize(seg_text)
         clean_sents: list[tuple[int, str]] = []
         for sent in sents:
