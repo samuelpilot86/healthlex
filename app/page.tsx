@@ -68,7 +68,7 @@ const T = {
     heroLine1: "La réglementation HealthTech,",
     heroLine2: "enfin accessible.",
     heroSub:
-      "HealthLex répond à vos questions juridiques sur la base d'un corpus de réglementations européennes et françaises. Il cite ses sources pour vous permettre de vérifier.",
+      "HealthLex répond à vos questions juridiques sur la base d'un corpus de réglementations européennes et françaises — sans jamais inventer : chaque affirmation renvoie à sa source réglementaire.",
     corpusTitle: "Corpus réglementaire intégré :",
     ctaMain: "Comprendre le projet →",
     ctaSub: "Problème · Stack technique · Améliorations",
@@ -80,7 +80,7 @@ const T = {
     heroLine1: "HealthTech regulation,",
     heroLine2: "finally accessible.",
     heroSub:
-      "HealthLex answers your legal questions based on a corpus of European and French regulations. It cites its sources so you can verify.",
+      "HealthLex answers your legal questions based on a corpus of European and French regulations — without ever hallucinating: every claim links back to its regulatory source.",
     corpusTitle: "Integrated Regulatory Corpus:",
     ctaMain: "Understand the project →",
     ctaSub: "Problem · Tech Stack · Improvements",
@@ -99,8 +99,9 @@ export default function Home() {
       <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-teal-600 text-xl font-black tracking-tight">Health</span>
-            <span className="text-slate-800 text-xl font-black tracking-tight">Lex</span>
+            <span className="inline-flex text-xl font-black tracking-tight">
+              <span className="text-teal-600">Health</span><span className="text-slate-800">Lex</span>
+            </span>
             <span className="ml-2 text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full font-semibold">
               {t.badge}
             </span>
