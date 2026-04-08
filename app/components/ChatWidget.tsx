@@ -33,9 +33,9 @@ const CHAT_T = {
     placeholder: "Posez votre question réglementaire…",
     suggestionsLabel: "Questions fréquentes :",
     suggestions: [
-      "Mon logiciel de santé est-il un dispositif médical ?",
+      "Qu'est-ce qu'un dispositif médical ?",
+      "Quelles sont les différentes catégories de dispositifs médicaux ?",
       "Quelles données sont considérées comme données de santé sous le RGPD ?",
-      "Comment obtenir la certification HDS ?",
       "Quelles obligations s'appliquent à mon IA médicale sous l'AI Act ?",
     ],
     sourceLabel: (i: number, doc: string) => `Source ${i + 1} — ${doc}`,
@@ -47,9 +47,9 @@ const CHAT_T = {
     placeholder: "Ask your regulatory question…",
     suggestionsLabel: "Frequently asked:",
     suggestions: [
-      "Is my health software a medical device?",
+      "What is a medical device?",
+      "What are the different categories of medical devices?",
       "What data counts as health data under GDPR?",
-      "How do I obtain HDS certification?",
       "What obligations apply to my medical AI under the AI Act?",
     ],
     sourceLabel: (i: number, doc: string) => `Source ${i + 1} — ${doc}`,
@@ -207,6 +207,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([makeWelcome(lang)]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const shouldScrollRef = useRef(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -226,7 +227,10 @@ export default function ChatWidget() {
   }, [lang]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (shouldScrollRef.current) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      shouldScrollRef.current = false;
+    }
   }, [messages]);
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -237,9 +241,11 @@ export default function ChatWidget() {
     setInput("");
     setLoading(true);
 
+    shouldScrollRef.current = true;
     setMessages((prev) => [...prev, { role: "user", content: question }]);
 
     const assistantPlaceholder: Message = { role: "assistant", content: "", sources: [] };
+    shouldScrollRef.current = true;
     setMessages((prev) => [...prev, assistantPlaceholder]);
 
     try {
