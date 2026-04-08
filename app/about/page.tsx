@@ -80,9 +80,9 @@ const T = {
     problemText:
       "Les réglementations HealthTech — RGPD, MDR, AI Act, NIS2, HDS — représentent des milliers de pages de textes techniques. Identifier l'article exact applicable à une situation prend du temps, même pour un professionnel. HealthLex démontre qu'un système RAG peut localiser en quelques secondes les extraits pertinents et les citer avec précision — sans jamais les inventer.",
     stats: [
-      { value: "6", label: "textes réglementaires" },
-      { value: "403", label: "chunks indexés" },
-      { value: "1024", label: "dimensions vectorielles" },
+      { value: "12", label: "textes réglementaires" },
+      { value: "1 552", label: "chunks indexés" },
+      { value: "1 024", label: "dimensions vectorielles" },
       { value: "< 1s", label: "latence Groq (streaming)" },
     ],
     stackTitle: "Une stack technique efficiente",
@@ -104,9 +104,9 @@ const T = {
     problemText:
       "HealthTech regulations — GDPR, MDR, AI Act, NIS2, HDS — span thousands of pages of technical text. Identifying the exact article applicable to a given situation takes time, even for a professional. HealthLex demonstrates that a RAG system can locate relevant excerpts in seconds and cite them precisely — without ever hallucinating.",
     stats: [
-      { value: "6", label: "regulatory texts" },
-      { value: "403", label: "indexed chunks" },
-      { value: "1024", label: "vector dimensions" },
+      { value: "12", label: "regulatory texts" },
+      { value: "1,552", label: "indexed chunks" },
+      { value: "1,024", label: "vector dimensions" },
       { value: "< 1s", label: "Groq latency (streaming)" },
     ],
     stackTitle: "An Efficient Tech Stack",
