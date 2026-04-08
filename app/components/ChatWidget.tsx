@@ -29,7 +29,7 @@ interface Message {
 const CHAT_T = {
   fr: {
     welcome:
-      "Bonjour ! Je suis HealthLex, votre assistant juridique spécialisé en réglementation HealthTech (RGPD, MDR, AI Act, NIS2, HDS…). Posez-moi une question sur la conformité réglementaire de votre solution de santé numérique.",
+      "Bonjour ! Je suis HealthLex, un moteur de recherche dans la réglementation HealthTech (RGPD, MDR, AI Act, NIS2, HDS…). Posez-moi une question sur un texte réglementaire et je vous citerai les extraits pertinents.",
     placeholder: "Posez votre question réglementaire…",
     suggestionsLabel: "Questions fréquentes :",
     suggestions: [
@@ -43,7 +43,7 @@ const CHAT_T = {
   },
   en: {
     welcome:
-      "Hello! I'm HealthLex, your legal assistant specialising in HealthTech regulation (GDPR, MDR, AI Act, NIS2, HDS…). Ask me anything about regulatory compliance for your digital health solution.",
+      "Hello! I'm HealthLex, a search engine for HealthTech regulation (GDPR, MDR, AI Act, NIS2, HDS…). Ask me a question about a regulatory text and I'll cite the relevant excerpts.",
     placeholder: "Ask your regulatory question…",
     suggestionsLabel: "Frequently asked:",
     suggestions: [
