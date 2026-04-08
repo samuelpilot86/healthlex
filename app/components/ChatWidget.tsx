@@ -210,14 +210,17 @@ export default function ChatWidget() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Au changement de langue, ajoute le message d'accueil dans la nouvelle langue
-  // seulement si le dernier message du bot n'est pas déjà un message d'accueil
+  // Au changement de langue :
+  // - si le dernier message assistant est un accueil → le remplacer dans la nouvelle langue
+  // - si une conversation est en cours → ne pas interrompre
   useEffect(() => {
     const welcomeTexts = [CHAT_T.fr.welcome, CHAT_T.en.welcome];
     setMessages((prev) => {
       const last = [...prev].reverse().find((m) => m.role === "assistant");
-      if (last && (welcomeTexts as string[]).includes(last.content)) return prev; // déjà un accueil
-      return [...prev, makeWelcome(lang)];
+      if (last && (welcomeTexts as string[]).includes(last.content)) {
+        return prev.map((m) => (m === last ? makeWelcome(lang) : m));
+      }
+      return prev;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
