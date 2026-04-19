@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { SiLinktree, SiLinkedin } from "react-icons/si";
+import { MdOutlineEmail } from "react-icons/md";
 import { useLang } from "../components/LanguageProvider";
 import { LangToggle } from "../components/LangToggle";
 import ContactModal from "../components/ContactModal";
@@ -268,9 +270,7 @@ export default function AboutPage() {
               title={t.authorLinktree}
               className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#39e09b] hover:border-[#39e09b] transition-colors"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M13.051 2.286a1.5 1.5 0 0 0-2.102 0L7.07 6.165l-1.06-1.06a1.5 1.5 0 0 0-2.122 2.121l2.121 2.122a1.5 1.5 0 0 0 2.122 0l.768-.768V20.25a1.5 1.5 0 0 0 3 0V8.58l.768.768a1.5 1.5 0 0 0 2.122 0l2.121-2.122a1.5 1.5 0 0 0-2.121-2.121l-1.06 1.06-3.879-3.879ZM7.5 14.25a1.5 1.5 0 0 0-3 0v6a1.5 1.5 0 0 0 3 0v-6Zm12 0a1.5 1.5 0 0 0-3 0v6a1.5 1.5 0 0 0 3 0v-6Z"/>
-              </svg>
+              <SiLinktree size={16} />
             </a>
             {/* LinkedIn */}
             <a
@@ -280,9 +280,7 @@ export default function AboutPage() {
               title="LinkedIn"
               className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#0a66c2] hover:border-[#0a66c2] transition-colors"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
+              <SiLinkedin size={16} />
             </a>
             {/* Mail / Contact */}
             <button
@@ -290,10 +288,7 @@ export default function AboutPage() {
               title={t.authorContact}
               className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-teal-600 hover:border-teal-400 transition-colors"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-              </svg>
+              <MdOutlineEmail size={18} />
             </button>
           </div>
         </section>
