@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import ChatWidget from "./components/ChatWidget";
 import { LangToggle } from "./components/LangToggle";
 import { useLang } from "./components/LanguageProvider";
+import ContactModal from "./components/ContactModal";
 
 const CORPUS_ITEMS = [
   {
@@ -110,6 +112,7 @@ const T = {
 export default function Home() {
   const { lang } = useLang();
   const t = T[lang];
+  const [contactOpen, setContactOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-teal-50 flex flex-col">
@@ -202,20 +205,33 @@ export default function Home() {
       {/* ── Footer ── */}
       <footer className="border-t border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between text-xs text-slate-400">
-          <span>
+          <span className="flex items-center gap-2">
             {t.footerLeftPrefix}{" "}
             <a
               href="https://linktr.ee/samuelpilot"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-teal-600 font-medium transition-colors"
+              className="text-slate-600 hover:text-teal-600 font-semibold transition-colors flex items-center gap-1"
             >
+              {/* Icône LinkTree */}
+              <svg width="12" height="14" viewBox="0 0 24 28" fill="currentColor" className="inline-block opacity-70">
+                <path d="M13.5 9.5l4.5-4.5-1.5-1.5-4.5 4.5V2h-2v6L5.5 3.5 4 5l4.5 4.5H2v2h6.5L4 16l1.5 1.5 5-5V20h2v-7.5l5 5L19 16l-4.5-4.5H22v-2h-8.5z"/>
+              </svg>
               Samuel PILOT
             </a>
+            <span className="text-slate-200">·</span>
+            <button
+              onClick={() => setContactOpen(true)}
+              className="text-slate-400 hover:text-teal-600 transition-colors underline underline-offset-2"
+            >
+              {lang === "fr" ? "Me contacter" : "Contact me"}
+            </button>
           </span>
           <span>{t.footerRight}</span>
         </div>
       </footer>
+
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} lang={lang} />}
     </div>
   );
 }

@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useLang } from "../components/LanguageProvider";
 import { LangToggle } from "../components/LangToggle";
+import ContactModal from "../components/ContactModal";
 
 const STACK_FR = [
   {
@@ -94,6 +96,11 @@ const T = {
       "Veille juridique automatisée et actualisation continue du RAG",
     ],
     ctaButton: "Essayer HealthLex →",
+    authorTitle: "À propos de l'auteur",
+    authorRole: "Product Manager IA",
+    authorBio: "Portfolio de démonstration de mise en œuvre d'un système RAG de bout en bout — du traitement du corpus réglementaire au déploiement en production.",
+    authorLinktree: "Profil LinkTree",
+    authorContact: "Me contacter",
   },
   en: {
     badge: "AI PM Portfolio",
@@ -118,11 +125,17 @@ const T = {
       "Automated legal monitoring and continuous RAG updates",
     ],
     ctaButton: "Try HealthLex →",
+    authorTitle: "About the author",
+    authorRole: "AI Product Manager",
+    authorBio: "Portfolio demonstration of an end-to-end RAG system implementation — from regulatory corpus processing to production deployment.",
+    authorLinktree: "LinkTree profile",
+    authorContact: "Contact me",
   },
 };
 
 export default function AboutPage() {
   const { lang } = useLang();
+  const [contactOpen, setContactOpen] = useState(false);
   const t = T[lang];
 
   return (
@@ -226,7 +239,7 @@ export default function AboutPage() {
         </section>
 
         {/* CTA */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 mb-8">
           <Link
             href="/"
             className="bg-teal-600 hover:bg-teal-700 transition-colors text-white rounded-xl px-5 py-2.5 text-sm font-semibold"
@@ -234,7 +247,41 @@ export default function AboutPage() {
             {t.ctaButton}
           </Link>
         </div>
+
+        {/* Bloc auteur */}
+        <section className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex items-center gap-5">
+          {/* Avatar initiales */}
+          <div className="shrink-0 w-14 h-14 rounded-full bg-teal-600 flex items-center justify-center text-white font-black text-lg select-none">
+            SP
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-slate-800">Samuel PILOT</p>
+            <p className="text-xs text-teal-600 font-semibold mb-1">{t.authorRole}</p>
+            <p className="text-sm text-slate-500 leading-relaxed">{t.authorBio}</p>
+          </div>
+          <div className="shrink-0 flex flex-col gap-2">
+            <a
+              href="https://linktr.ee/samuelpilot"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-teal-600 transition-colors border border-slate-200 rounded-lg px-3 py-1.5 hover:border-teal-300"
+            >
+              <svg width="11" height="13" viewBox="0 0 24 28" fill="currentColor" className="opacity-70">
+                <path d="M13.5 9.5l4.5-4.5-1.5-1.5-4.5 4.5V2h-2v6L5.5 3.5 4 5l4.5 4.5H2v2h6.5L4 16l1.5 1.5 5-5V20h2v-7.5l5 5L19 16l-4.5-4.5H22v-2h-8.5z"/>
+              </svg>
+              {t.authorLinktree}
+            </a>
+            <button
+              onClick={() => setContactOpen(true)}
+              className="flex items-center gap-1.5 text-xs font-semibold text-white bg-teal-600 hover:bg-teal-700 transition-colors rounded-lg px-3 py-1.5"
+            >
+              ✉ {t.authorContact}
+            </button>
+          </div>
+        </section>
       </div>
+
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} lang={lang} />}
     </div>
   );
 }
