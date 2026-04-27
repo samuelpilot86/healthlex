@@ -58,7 +58,6 @@ const CHAT_T = {
     placeholder: "Posez votre question réglementaire…",
     suggestionsLabel: "Questions fréquentes :",
     suggestions: [
-      "Que dit le RGPD sur les conditions de traitement des données de santé ?",
       "Quelles exigences l'AI Act impose-t-il aux systèmes d'IA à haut risque ?",
       "Quelles sont les catégories spéciales de données au sens du RGPD ?",
     ],
@@ -72,7 +71,6 @@ const CHAT_T = {
     placeholder: "Ask your regulatory question…",
     suggestionsLabel: "Frequently asked:",
     suggestions: [
-      "What does the GDPR say about processing health data?",
       "What requirements does the AI Act impose on high-risk AI systems?",
       "What are the special categories of data under the GDPR?",
     ],
