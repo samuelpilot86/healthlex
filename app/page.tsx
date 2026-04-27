@@ -93,8 +93,6 @@ const T = {
     heroSub:
       "HealthLex parcourt la réglementation européenne pour vous retourner les extraits exacts — sans jamais inventer, chaque réponse renvoie au texte officiel.",
     corpusTitle: "Corpus réglementaire intégré :",
-    ctaMain: "Comprendre le projet →",
-    ctaSub: "Problème · Stack technique · Améliorations",
     footerLeftPrefix: "HealthLex · Démo portfolio de product manager IA de",
     footerRight: "Usage démo uniquement",
   },
@@ -105,8 +103,6 @@ const T = {
     heroSub:
       "HealthLex searches European regulation to return exact excerpts — without ever hallucinating, every answer links back to the official text.",
     corpusTitle: "Integrated Regulatory Corpus:",
-    ctaMain: "Understand the project →",
-    ctaSub: "Problem · Tech Stack · Improvements",
     footerLeftPrefix: "HealthLex · AI product manager portfolio demo by",
     footerRight: "For demo use only",
   },
@@ -132,7 +128,15 @@ export default function Home() {
               {t.badge}
             </span>
           </div>
-          <LangToggle />
+          <div className="flex items-center gap-3">
+            <Link
+              href="/about"
+              className="text-sm font-semibold text-slate-600 hover:text-teal-600 transition-colors"
+            >
+              {lang === "fr" ? "Case study" : "Case study"}
+            </Link>
+            <LangToggle />
+          </div>
         </div>
       </nav>
 
@@ -194,14 +198,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* CTA */}
-          <Link
-            href="/about"
-            className="bg-teal-600 hover:bg-teal-700 transition-colors text-white rounded-2xl p-4 text-center block"
-          >
-            <p className="font-bold text-sm">{t.ctaMain}</p>
-            <p className="text-teal-200 text-xs mt-0.5">{t.ctaSub}</p>
-          </Link>
         </div>
       </section>
 
