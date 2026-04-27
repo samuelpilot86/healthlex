@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { SiLinktree, SiLinkedin } from "react-icons/si";
+import { SiLinktree } from "react-icons/si";
+import { FaLinkedin } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { useLang } from "../components/LanguageProvider";
 import { LangToggle } from "../components/LangToggle";
@@ -280,7 +281,7 @@ export default function AboutPage() {
               title="LinkedIn"
               className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#0a66c2] hover:border-[#0a66c2] transition-colors"
             >
-              <SiLinkedin size={16} />
+              <FaLinkedin size={16} />
             </a>
             {/* Mail / Contact */}
             <button

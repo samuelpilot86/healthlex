@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { SiLinktree, SiLinkedin } from "react-icons/si";
+import { SiLinktree } from "react-icons/si";
+import { FaLinkedin } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import ChatWidget from "./components/ChatWidget";
 import { LangToggle } from "./components/LangToggle";
@@ -217,7 +218,7 @@ export default function Home() {
             {/* LinkedIn */}
             <a href="https://www.linkedin.com/in/samuel-pi/" target="_blank" rel="noopener noreferrer" title="LinkedIn"
               className="text-slate-400 hover:text-[#0a66c2] transition-colors">
-              <SiLinkedin size={13} />
+              <FaLinkedin size={13} />
             </a>
             {/* Mail */}
             <button onClick={() => setContactOpen(true)} title={lang === "fr" ? "Me contacter" : "Contact me"}

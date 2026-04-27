@@ -58,7 +58,6 @@ const CHAT_T = {
     placeholder: "Posez votre question réglementaire…",
     suggestionsLabel: "Questions fréquentes :",
     suggestions: [
-      "Quelles sont les obligations d'un hébergeur de données de santé ?",
       "Que dit le RGPD sur les conditions de traitement des données de santé ?",
       "Quelles exigences l'AI Act impose-t-il aux systèmes d'IA à haut risque ?",
       "Quelles sont les catégories spéciales de données au sens du RGPD ?",
