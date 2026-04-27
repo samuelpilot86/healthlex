@@ -131,9 +131,9 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <Link
               href="/about"
-              className="text-sm font-semibold text-slate-600 hover:text-teal-600 transition-colors"
+              className="text-sm font-semibold text-white bg-teal-600 hover:bg-teal-700 transition-colors px-4 py-2 rounded-xl"
             >
-              {lang === "fr" ? "Case study" : "Case study"}
+              Case study
             </Link>
             <LangToggle />
           </div>
