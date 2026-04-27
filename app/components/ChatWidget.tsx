@@ -73,7 +73,6 @@ const CHAT_T = {
     placeholder: "Ask your regulatory question…",
     suggestionsLabel: "Frequently asked:",
     suggestions: [
-      "What are the obligations of a health data hosting provider?",
       "What does the GDPR say about processing health data?",
       "What requirements does the AI Act impose on high-risk AI systems?",
       "What are the special categories of data under the GDPR?",
