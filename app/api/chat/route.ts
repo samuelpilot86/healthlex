@@ -163,7 +163,7 @@ Réponds en français, de façon claire et structurée.`;
 
       try {
         const completion = await groq.chat.completions.create({
-          model: "openai/gpt-oss-120b",
+          model: "meta-llama/llama-4-scout-17b-16e-instruct",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt },
