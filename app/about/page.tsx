@@ -11,10 +11,10 @@ import ContactModal from "../components/ContactModal";
 
 const STACK_FR = [
   {
-    tool: "Llama 3.3 70B, Groq",
+    tool: "GPT OSS 120B, Groq",
     type: "LLM et inférence",
     advantage:
-      "Llama est un modèle de langage open source. L'inférence est réalisée par Groq, entreprise qui a conçu des puces spécialisées pour l'inférence de LLM, ce qui permet une génération de réponse rapide.",
+      "GPT OSS 120B est un modèle de langage open source. L'inférence est réalisée par Groq, entreprise qui a conçu des puces spécialisées pour l'inférence de LLM, ce qui permet une génération de réponse rapide.",
   },
   {
     tool: "Cohere embed-multilingual-v3.0",
@@ -44,10 +44,10 @@ const STACK_FR = [
 
 const STACK_EN = [
   {
-    tool: "Llama 3.3 70B, Groq",
+    tool: "GPT OSS 120B, Groq",
     type: "LLM and inference",
     advantage:
-      "Llama is an open-source language model. Inference is handled by Groq, a company that designed specialised chips for LLM inference, enabling fast response generation.",
+      "GPT OSS 120B is an open-source language model. Inference is handled by Groq, a company that designed specialised chips for LLM inference, enabling fast response generation.",
   },
   {
     tool: "Cohere embed-multilingual-v3.0",
