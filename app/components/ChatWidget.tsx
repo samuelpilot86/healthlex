@@ -62,6 +62,7 @@ const CHAT_T = {
     suggestions: [
       "Quelles exigences l'AI Act impose-t-il aux systèmes d'IA à haut risque ?",
       "Quelles sont les catégories spéciales de données au sens du RGPD ?",
+      "Qu'est-ce qu'un dispositif médical ?",
     ],
     sourceLabel: (i: number, doc: string) => `Source ${i + 1} — ${doc}`,
     readDoc: "Read in document",
@@ -75,6 +76,7 @@ const CHAT_T = {
     suggestions: [
       "What requirements does the AI Act impose on high-risk AI systems?",
       "What are the special categories of data under the GDPR?",
+      "What is a medical device?",
     ],
     sourceLabel: (i: number, doc: string) => `Source ${i + 1} — ${doc}`,
     readDoc: "Read in document",
@@ -179,7 +181,11 @@ function SourceCard({
 
 // Rendu Markdown des réponses du modèle (gras, listes, tableaux, titres).
 // Le HTML brut n'est pas interprété par react-markdown : la sortie du LLM ne peut pas injecter de balises.
+// Le modèle insère parfois des <br> littéraux dans les cellules de tableau (une ligne Markdown ne
+// peut pas contenir de vrai saut de ligne) ; comme le HTML brut n'est pas interprété, on les remplace
+// par un séparateur visuel avant le rendu plutôt que de les laisser s'afficher tels quels.
 function MarkdownAnswer({ content }: { content: string }) {
+  const cleaned = content.replace(/<br\s*\/?>/gi, " · ");
   return (
     <div className="text-sm leading-relaxed space-y-2">
       <ReactMarkdown
@@ -219,7 +225,7 @@ function MarkdownAnswer({ content }: { content: string }) {
           td: ({ children }) => <td className="border border-slate-200 px-2 py-1 align-top">{children}</td>,
         }}
       >
-        {content}
+        {cleaned}
       </ReactMarkdown>
     </div>
   );
