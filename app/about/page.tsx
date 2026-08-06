@@ -11,10 +11,10 @@ import ContactModal from "../components/ContactModal";
 
 const STACK_FR = [
   {
-    tool: "Llama 4 Scout, Groq",
+    tool: "GPT OSS 120B, Groq",
     type: "LLM et inférence",
     advantage:
-      "Llama 4 Scout est un modèle de langage open source de Meta, utilisant une architecture Mixture-of-Experts (16 experts, 17B de paramètres actifs). L'inférence est réalisée par Groq, entreprise qui a conçu des puces spécialisées pour l'inférence de LLM, ce qui permet une génération de réponse rapide.",
+      "GPT OSS 120B est un modèle de langage open source publié par OpenAI. L'inférence est réalisée par Groq, entreprise qui a conçu des puces spécialisées pour l'inférence de LLM, ce qui permet une génération de réponse rapide.",
   },
   {
     tool: "Cohere embed-multilingual-v3.0",
@@ -44,10 +44,10 @@ const STACK_FR = [
 
 const STACK_EN = [
   {
-    tool: "Llama 4 Scout, Groq",
+    tool: "GPT OSS 120B, Groq",
     type: "LLM and inference",
     advantage:
-      "Llama 4 Scout is an open-source language model by Meta, using a Mixture-of-Experts architecture (16 experts, 17B active parameters). Inference is handled by Groq, a company that designed specialised chips for LLM inference, enabling fast response generation.",
+      "GPT OSS 120B is an open-source language model released by OpenAI. Inference is handled by Groq, a company that designed specialised chips for LLM inference, enabling fast response generation.",
   },
   {
     tool: "Cohere embed-multilingual-v3.0",
