@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "healthlex",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "options-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/tmp", "-p", "8765", "--no-clipboard"],
+      "port": 8765
+    },
+    {
+      "name": "flashback-mirror",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/samuel/kDrive/Docs légers - DD/PM IA HealthTech/MVP/Flashback Mirror/docs", "-p", "8766", "--no-clipboard"],
+      "port": 8766
+    }
+  ]
+}

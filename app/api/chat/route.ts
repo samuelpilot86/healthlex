@@ -170,7 +170,7 @@ Réponds en français, de façon claire et structurée.`;
           ],
           stream: true,
           temperature: 0.1,
-          max_tokens: 1024,
+          max_tokens: 4096,
         });
 
         for await (const chunk of completion) {

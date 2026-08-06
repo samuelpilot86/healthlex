@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, lazy, Suspense } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useLang } from "./LanguageProvider";
 
 // Chargement différé du viewer PDF (lourd, inutile au premier rendu)
@@ -175,6 +177,54 @@ function SourceCard({
   );
 }
 
+// Rendu Markdown des réponses du modèle (gras, listes, tableaux, titres).
+// Le HTML brut n'est pas interprété par react-markdown : la sortie du LLM ne peut pas injecter de balises.
+function MarkdownAnswer({ content }: { content: string }) {
+  return (
+    <div className="text-sm leading-relaxed space-y-2">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          p: ({ children }) => <p className="whitespace-pre-wrap">{children}</p>,
+          strong: ({ children }) => <strong className="font-semibold text-slate-900">{children}</strong>,
+          em: ({ children }) => <em className="italic">{children}</em>,
+          ul: ({ children }) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
+          ol: ({ children }) => <ol className="list-decimal pl-5 space-y-1">{children}</ol>,
+          li: ({ children }) => <li className="pl-0.5">{children}</li>,
+          h1: ({ children }) => <h1 className="font-bold text-slate-900 text-base">{children}</h1>,
+          h2: ({ children }) => <h2 className="font-bold text-slate-900">{children}</h2>,
+          h3: ({ children }) => <h3 className="font-semibold text-slate-900">{children}</h3>,
+          blockquote: ({ children }) => (
+            <blockquote className="border-l-2 border-teal-300 pl-3 text-slate-600 italic">{children}</blockquote>
+          ),
+          code: ({ children }) => (
+            <code className="bg-slate-100 text-slate-800 rounded px-1 py-0.5 text-xs font-mono">{children}</code>
+          ),
+          a: ({ href, children }) => (
+            <a href={href} target="_blank" rel="noopener noreferrer" className="text-teal-700 underline underline-offset-2">
+              {children}
+            </a>
+          ),
+          hr: () => <hr className="border-slate-200" />,
+          // Les tableaux peuvent déborder sur mobile : conteneur scrollable dédié
+          table: ({ children }) => (
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs border-collapse">{children}</table>
+            </div>
+          ),
+          thead: ({ children }) => <thead className="bg-slate-50">{children}</thead>,
+          th: ({ children }) => (
+            <th className="border border-slate-200 px-2 py-1 text-left font-semibold text-slate-700">{children}</th>
+          ),
+          td: ({ children }) => <td className="border border-slate-200 px-2 py-1 align-top">{children}</td>,
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
+}
+
 function MessageBubble({ msg, readDocLabel }: { msg: Message; readDocLabel: string }) {
   const isUser = msg.role === "user";
 
@@ -199,7 +249,11 @@ function MessageBubble({ msg, readDocLabel }: { msg: Message; readDocLabel: stri
               : "bg-white border border-slate-200 text-slate-800 rounded-tl-sm shadow-sm"
           }`}
         >
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+          {isUser ? (
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+          ) : (
+            <MarkdownAnswer content={msg.content} />
+          )}
         </div>
 
         {/* Sources */}
